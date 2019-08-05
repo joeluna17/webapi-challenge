@@ -17,7 +17,7 @@ router.get('/', async (req, res)=>{
 
 })
 
-router.post('/', async (req, res)=>{
+router.post('/', validateBodyPost ,async (req, res)=>{
     const newProject = req.body;
 
     try{
@@ -29,7 +29,7 @@ router.post('/', async (req, res)=>{
     }
 })
 
-router.put('/:id', validateId, async (req, res)=>{
+router.put('/:id', validateBodyPost ,validateId, async (req, res)=>{
     const {id} = req.params;
     const updatedProject = req.body;
 
@@ -71,6 +71,20 @@ async function validateId (req, res, next){
         res.status(500).json({success: false, message})
     }
 }
+
+async function validateBodyPost(req, res, next) {
+    const projectInfo = req.body;
+
+    try{
+        projectInfo.name === "" || projectInfo.description === ""?
+        res.status(400).json({success: false, message:"Please fill in all required fields"}):next()
+    }
+    catch({message}){
+        res.status(500).json({success: false, message})
+    }
+
+}
+
 
 
 
