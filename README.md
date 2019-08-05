@@ -26,13 +26,26 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+This week we learned about  server side-routing and middleware.  The server side routing was a great concept to learn as the express router lets you define multiple endpoints and modularize the complexity of having an application with many resources to apply CRUD operations. Middleware which is already baked into express allows us to intercept the request and response actions and perform logical operations on them and or apply error logic to CURD operations. 
+
+
 - [ ] Describe Middleware?
+
+	Middleware can be broken into two parts, one part is normal middleware and the second part is error handling middleware. Middleware are defined and used either globally or in CRUD calls to the database and can for example allow us to check an id and if it exists in the database. By writing this logic one time we can just stick this function in the the “middle” of the request and response actions and continue there next() operation or return from our middleware. This can be written once and then reused.
 
 - [ ] Describe a Resource?
 
+	A resource is data that lives in the database. We can create, modify, delete and get these resources.
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+The API can return a response status which is successful usually is a 200 response. On top of this we can also return a json object with a message and the object that we either created, updated , read or deleted.
+
 - [ ] How can we partition our application into sub-applications?
+
+	We can use the express Router to patrician our application into sub-applications. We can create file directory for each resource and create the CRUD operations actions in the resources respective files. From their we can require the file and create a constant type to .use() in for express and in the first argument pass in the endpoint url along with the associated router canst that we imported. This would be done in the server.js file and from there export server.js to the index.js and run the server.listen from there.
+
+
 
 ## Project Setup
 

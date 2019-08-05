@@ -11,8 +11,8 @@ router.get('/', async (req, res)=>{
         const projects = await projectdb.get()
         res.status(200).json(projects)
     }
-    catch(err){
-        res.status(500).json({success:false, message:err})
+    catch({message}){
+        res.status(500).json({success:false, message})
     }
 
 })
@@ -24,11 +24,55 @@ router.post('/', async (req, res)=>{
         const project = await projectdb.insert(newProject)
         res.status(201).json(project)
     }
-    catch(err){  
-      res.status(500).json({status: false, message: err})
+    catch({message}){  
+      res.status(500).json({status: false, message})
     }
-
 })
+
+router.put('/:id', validateId, async (req, res)=>{
+    const {id} = req.params;
+    const updatedProject = req.body;
+
+    try{
+        const project = await projectdb.update(id, updatedProject)
+        res.status(200).json(project)
+    }
+    catch({message}){
+        res.status(500).json({success: false, message})
+    }
+})
+
+
+router.delete('/:id',validateId ,async(req, res)=>{
+    const {id} = req.params;
+    try{
+        const deleted = await projectdb.remove(id)
+        res.status(200).end(console.log(`successfully deleted ${id}`))
+    }
+    catch({message}){
+        res.status(500).json({success: false, message})
+    }
+})
+
+
+
+//middleware
+
+async function validateId (req, res, next){
+    const {id} = req.params;
+
+    try{
+        const exsistingProject = await projectdb.get(id)
+        exsistingProject? next() : 
+        res.status(404).json({success: false, message:"Invalid ID not found."});
+       
+    }
+    catch({message}){
+        res.status(500).json({success: false, message})
+    }
+}
+
+
 
 
 module.exports = router;
